@@ -1,38 +1,45 @@
-import { FormEvent, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './PostComments.module.css';
 
-import Comment from '../../models/Comment';
+const PostComments = () => {
+    const [comments, setComments] = useState<string[]>([]);
+    const [commentText, setCommentText] = useState<string>('');
 
-const Post = () => {
-    const [comments, setComments] = useState<Comment[]>([]);
-    const [tempComment, setTempComment] = useState('');
-
-    function handleAddComment(event: FormEvent<HTMLFormElement>) {
+    const handleCommentSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const newComment = new Comment(comments.length, tempComment);
-        setTempComment('');
-        setComments([...comments, newComment]);
-    }
+        if (commentText.trim()) {
+            setComments([...comments, commentText]);
+            setCommentText('');
+        }
+    };
 
     return (
-        <div>
-            <ul className={styles['post-comments']}>
-                {comments.map(({ comment, id }) => (
-                    <li className={styles['post-comment']} key={id}>
-                        <p className={styles['post-comment-content']}>
-                            {comment}
-                        </p>
+        <div data-testid="post-comments">
+            <ul className="post-comments">
+                {comments.map((comment, index) => (
+                    <li key={index} className={styles['post-comment']} data-testid={`comment-${index}`}>
+                        {comment}
                     </li>
                 ))}
             </ul>
-            <form onSubmit={handleAddComment} className={styles['post-comments-form']}>
-                <textarea value={tempComment} onChange={e => setTempComment(e.target.value)} required className={styles['post-comments-form-textarea']} />
-                <button type="submit" className={styles['post-comments-form-button']}>
+            <form className={styles['post-comments-form']} onSubmit={handleCommentSubmit}>
+                <textarea
+                    className={styles['post-comments-form-textarea']}
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                    required
+                    data-testid="comment-textarea"
+                />
+                <button
+                    className={styles['post-comments-form-button']}
+                    type="submit"
+                    data-testid="comment-button"
+                >
                     Comentar
                 </button>
             </form>
         </div>
     );
-}
+};
 
-export default Post;
+export default PostComments;

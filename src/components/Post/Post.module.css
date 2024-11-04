@@ -16,10 +16,7 @@
     font-size: 14px;
     line-height: 22px;
     margin-bottom: 24px;
-}
-
-.post-comments {
-    
+    resize: none;
 }
 
 .post-comment {
@@ -47,6 +44,7 @@
     width: 100%;
     margin-bottom: 8px;
     padding: 8px 16px;
+    resize: none;
 }
 
 .post-comments-form-button {
